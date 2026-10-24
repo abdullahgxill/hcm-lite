@@ -1,0 +1,37 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> hcm-lite@1.0.0 test
+> npm test -w backend
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> hcm-backend@1.0.0 test
+> node --test --test-concurrency=1 src/tests/*.test.js
+
+✔ working days exclude weekends and public holidays (1.985656ms)
+✔ 09:15 is on time, 09:16 is late; exactly five hours is not half day (17.811538ms)
+✔ illustrative tax slabs and boundaries (0.238482ms)
+✔ payroll exact gross, paid leave, unpaid, absence, half days and rounding (0.922514ms)
+✔ joiners and leavers prorate only eligible working days (0.402566ms)
+✔ AI tool authorization follows roles (0.133537ms)
+✔ date ranges cannot expand into an unbounded query (0.324359ms)
+✔ fresh install, authentication, roles and employee creation (4242.26854ms)
+✔ attendance server stamp, duplicate 409, checkout and role guards (76.729524ms)
+✔ leave overlap, quotas, comments, cancellation and decision notification (120.16337ms)
+✔ concurrent approvals cannot overspend the same annual quota (100.663253ms)
+✔ CSV validation is side-effect free and commit creates only validated rows (315.744218ms)
+✔ dashboard and AI use identical live metrics and employee scope (38.162118ms)
+✔ correction request approval and immutable audit API (51.717387ms)
+✔ payroll draft, review revision, finalization lock, payslip PDF and data scope (157.970903ms)
+✔ announcements, notification ownership, login reset and deactivation (1025.946308ms)
+✔ AI unavailable fallback, tool calling, smart-leave retry and logs (52.097784ms)
+✔ AI hourly rate limit persists across instances and logout revokes token (24.544812ms)
+✔ HR chosen temporary passwords, email normalization, repeated resets and scope (1868.776041ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9663.577468

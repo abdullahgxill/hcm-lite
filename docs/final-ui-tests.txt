@@ -1,0 +1,21 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> hcm-lite@1.0.0 test:ui
+> node --test frontend/src/tests/*.test.mjs
+
+7:38:15 PM [vite] (client) Re-optimizing dependencies because vite config has changed
+✔ typing in a dialog keeps focus, input identity and cursor across parent updates (404.166048ms)
+✔ Escape invokes the latest close callback; Tab stays inside the modal (8.323186ms)
+✔ a wrong current password shows an error without logging out the valid session (2.855745ms)
+✔ password visibility and credential copying preserve the exact secret (12.207373ms)
+7:38:16 PM [vite] (client) Re-optimizing dependencies because vite config has changed
+✔ real forms: Admin creates HR, copies credentials, resets HR, fresh session logs in and changes password (3850.60857ms)
+✔ complete real forms: HR employee registration, Employee attendance/leave, HR approval/draft, Admin lock and Employee PDF (3209.579888ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8821.941568

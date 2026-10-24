@@ -1,0 +1,21 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> hcm-lite@1.0.0 build
+> npm run build -w frontend
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> hcm-frontend@1.0.0 build
+> vite build
+
+vite v6.4.5 building for production...
+transforming...
+✓ 2345 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.67 kB │ gzip:   0.39 kB
+dist/assets/index-_g6EaMpO.css   29.91 kB │ gzip:   7.54 kB
+dist/assets/react-COo9EkB9.js    51.70 kB │ gzip:  18.21 kB
+dist/assets/index-CW7oC-vY.js   346.99 kB │ gzip: 107.85 kB
+dist/assets/charts-BJBTuC0B.js  387.37 kB │ gzip: 112.70 kB
+✓ built in 3.48s

@@ -73,11 +73,11 @@ AI requests validate tool names/arguments, roles and record scope. The backend c
 ## Tests and actual verification
 
 - 19 backend tests passed against a real disposable MongoDB replica set.
-- 5 UI tests passed in the original monorepo, including real React forms calling Express and MongoDB through supertest transport.
+- 6 UI tests passed, including real React forms calling Express and MongoDB through supertest transport.
 - 4 standalone frontend regression tests passed.
 - Frontend production build passed.
 - Independent npm ci installations and production-only backend serverless export passed.
-- The real form test covers Admin HR creation, exact credential copying, reset, old-password rejection, fresh-session login and forced password change.
+- Real-form tests cover Admin HR creation/reset, HR employee registration, Employee login/password change/check-in/check-out/leave application, HR leave approval/payroll draft, Admin finalization lock, Employee PDF download, cross-employee salary/payslip scope, leave balances and notification delivery.
 - Backend tests cover all three roles, registration, attendance, leave overlap/balances/concurrency, payroll formulas/finalization/PDF scope, audit/notifications, dashboard/tool consistency and mocked AI tools/rate limits.
 - Live hosted LLM behavior, complete production HR/employee demo and mobile browser visual review remain unverified.
 
@@ -90,6 +90,7 @@ Reproduce:
     cd ../frontend
     npm ci
     npm test
+    npm run test:workflow
     npm run build
 
 Tests do not write production business data. Backend tests start a disposable test database and may download a MongoDB binary. See package docs for saved test logs and the demonstration sequence. Passing tests are not a guarantee that every defect has been eliminated.
