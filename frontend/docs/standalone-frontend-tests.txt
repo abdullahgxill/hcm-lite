@@ -1,0 +1,17 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> hcm-lite-frontend@1.0.0 test
+> node --test src/tests/forms.test.mjs
+
+✔ typing in a dialog keeps focus, input identity and cursor across parent updates (416.07548ms)
+✔ Escape invokes the latest close callback; Tab stays inside the modal (15.023905ms)
+✔ a wrong current password shows an error without logging out the valid session (4.732585ms)
+✔ password visibility and credential copying preserve the exact secret (13.177245ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1872.442846

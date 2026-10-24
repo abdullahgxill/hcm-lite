@@ -1,0 +1,13 @@
+node_modules/
+.env
+.env.*
+!.env.example
+dist/
+coverage/
+.vercel/
+*.log
+.DS_Store
+hcm-local-*/
+hcm-test-*/
+tmp/
+.local-bin/

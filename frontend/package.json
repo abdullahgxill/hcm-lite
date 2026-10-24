@@ -1,0 +1,30 @@
+{
+  "name": "hcm-lite-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "test": "node --test src/tests/forms.test.mjs"
+  },
+  "dependencies": {
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-router-dom": "7.18.4",
+    "axios": "1.20.0",
+    "recharts": "3.10.1",
+    "lucide-react": "0.548.0"
+  },
+  "devDependencies": {
+    "vite": "6.4.5",
+    "@vitejs/plugin-react": "4.7.0",
+    "tailwindcss": "4.3.3",
+    "@tailwindcss/vite": "4.3.3",
+    "jsdom": "26.1.0"
+  },
+  "engines": {
+    "node": ">=22.12"
+  }
+}
