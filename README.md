@@ -70,6 +70,14 @@ Frontend only: VITE_API_URL, including the backend /api suffix. Never put databa
 
 AI requests validate tool names/arguments, roles and record scope. The backend controls data access; the provider cannot query MongoDB directly. AI responses are labelled, logged, limited and timed out. Smart leave requires user confirmation before submission.
 
+## Camera, location and assistant update
+
+Camera attendance now supports a front-camera preview, local single-face detection, fresh GPS, server Haversine geofence checks and result-only storage. No photos, face descriptors or raw GPS fixes are stored. Open `/device-check` to check hardware without logging in or saving attendance. Employees and HR with an employee profile can choose camera attendance; Admin sets the office coordinates/radius.
+
+The assistant exposes clearly labeled verified database reports even without an LLM key. Hosted AI chat, smart leave and summaries still require server-side provider configuration. Real-device camera/GPS confirmation and live hosted-AI verification are pending.
+
+Latest extension checks: **24 backend tests passed; 11 UI tests passed; frontend build passed.** See [camera/location/AI guide](docs/CAMERA_LOCATION_AI.md) for setup, privacy, anti-spoofing limits and verification scope. These are isolated test results, not a claim of a complete production HR/employee demo.
+
 ## Tests and actual verification
 
 - 19 backend tests passed against a real disposable MongoDB replica set.

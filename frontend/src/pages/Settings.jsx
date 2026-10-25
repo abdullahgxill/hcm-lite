@@ -70,9 +70,9 @@ export default function Settings() {
                     departments: list("departments"),
                     designations: list("designations"),
                     holidays: list("holidays"),
-                    latitude: form.latitude === "" ? undefined : form.latitude,
+                    latitude: form.latitude === "" ? null : form.latitude,
                     longitude:
-                      form.longitude === "" ? undefined : form.longitude,
+                      form.longitude === "" ? null : form.longitude,
                   }),
                 "Organization settings saved. New records will use these rules.",
               );
@@ -245,7 +245,7 @@ export default function Settings() {
             </Panel>
             <Panel
               title="Office location"
-              subtitle="Stored for the optional camera attendance extension; core attendance uses web check-in."
+              subtitle="Camera attendance requires exactly one face, GPS accuracy of 100 m or better, and a position inside this radius. No photos are stored."
             >
               <div className="form-grid">
                 {f("latitude", "Latitude", "number", {

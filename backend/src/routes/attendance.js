@@ -21,7 +21,11 @@ import {
 } from "../services/rules.js";
 import { assertUnlockedDates } from "../services/leaves.js";
 import { audit, notify } from "../services/audit.js";
+import { attendanceCaptureSchema, cameraPolicy, verifyCapture } from "../services/camera.js";
 export const attendance = Router();
+attendance.get("/camera-policy", async (req, res) => {
+  res.json(cameraPolicy(await Company.findById("company")));
+});
 attendance.get("/", async (req, res) => {
   const c = await Company.findById("company"),
     today = localDate(new Date(), c.timezone),
@@ -89,11 +93,12 @@ attendance.get("/", async (req, res) => {
     }
   res.json(items.sort((a, b) => b.date.localeCompare(a.date)));
 });
-attendance.post("/check-in", roles("EMPLOYEE", "HR"), async (req, res) => {
+attendance.post("/check-in", roles("EMPLOYEE", "HR"), validate(attendanceCaptureSchema), async (req, res) => {
   const employeeId = ownId(req.user),
     now = new Date(),
     c = await Company.findById("company"),
-    date = localDate(now, c.timezone);
+    date = localDate(now, c.timezone),
+    verification = verifyCapture(req.body, c, now);
   const result = await transaction(async (session) => {
     await assertUnlockedDates([date], session);
     const e = await Employee.findByIdAndUpdate(
@@ -132,6 +137,8 @@ attendance.post("/check-in", roles("EMPLOYEE", "HR"), async (req, res) => {
             date,
             checkIn: now,
             rules,
+            source: req.body.source,
+            checkInVerification: verification,
             ...attendanceStatus(now, null, rules),
           },
         ],
@@ -144,16 +151,18 @@ attendance.post("/check-in", roles("EMPLOYEE", "HR"), async (req, res) => {
       "attendance",
       a._id,
       null,
-      { date, checkIn: now },
+      { date, checkIn: now, source: req.body.source, cameraVerified: !!verification },
       session,
     );
     return a;
   });
   res.status(201).json(result);
 });
-attendance.post("/check-out", roles("EMPLOYEE", "HR"), async (req, res) => {
+attendance.post("/check-out", roles("EMPLOYEE", "HR"), validate(attendanceCaptureSchema), async (req, res) => {
   const c = await Company.findById("company"),
-    date = localDate(new Date(), c.timezone);
+    now = new Date(),
+    date = localDate(now, c.timezone),
+    verification = verifyCapture(req.body, c, now);
   res.json(
     await transaction(async (session) => {
       await assertUnlockedDates([date], session);
@@ -163,7 +172,8 @@ attendance.post("/check-out", roles("EMPLOYEE", "HR"), async (req, res) => {
       }).session(session);
       assert(a, 422, "Check in before checking out.");
       assert(!a.checkOut, 409, "You have already checked out.");
-      a.checkOut = new Date();
+      a.checkOut = now;
+      if (verification) a.checkOutVerification = verification;
       Object.assign(a, attendanceStatus(a.checkIn, a.checkOut, a.rules));
       await a.save({ session });
       await audit(

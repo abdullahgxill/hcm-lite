@@ -83,6 +83,8 @@ export const Attendance = model(
     status: String,
     rules: Schema.Types.Mixed,
     source: { type: String, default: "web" },
+    checkInVerification: { faceCount: Number, accuracyMeters: Number, distanceMeters: Number, checkedAt: Date },
+    checkOutVerification: { faceCount: Number, accuracyMeters: Number, distanceMeters: Number, checkedAt: Date },
   },
   [[{ employeeId: 1, date: 1 }, { unique: true }]],
 );

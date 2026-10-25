@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Clock3, Plus, CalendarDays, List } from "lucide-react";
+import { Clock3, Plus, CalendarDays, List, Camera } from "lucide-react";
+import CameraAttendance from "../features/CameraAttendance";
 import { useAuth } from "../contexts/AuthContext";
 import { useResource } from "../hooks/useResource";
 import { api } from "../services/api";
@@ -94,6 +95,7 @@ export default function Attendance() {
     }),
     [calendar, setCalendar] = useState(user.role === "EMPLOYEE"),
     [correction, setCorrection] = useState(false),
+    [camera, setCamera] = useState(false),
     [decision, setDecision] = useState(null),
     [comment, setComment] = useState(""),
     action = useAction();
@@ -134,7 +136,9 @@ export default function Attendance() {
             Request correction
           </Button>
         )}
+        {user.employeeId && user.role !== "ADMIN" && <Button variant="secondary" disabled={!!me?.checkOut} onClick={() => setCamera(true)}><Camera size={17} />Camera {me?.checkIn ? "check out" : "check in"}</Button>}
       </PageHeader>
+      {camera && <CameraAttendance kind={me?.checkIn ? "check-out" : "check-in"} onClose={() => setCamera(false)} onRecorded={() => { setCamera(false); resource.reload(); }} />}
       <ActionNotices action={action} />
       <div className="filter-bar">
         <Field
@@ -236,6 +240,7 @@ export default function Attendance() {
                   label: "Status",
                   render: (a) => <Badge>{a.status}</Badge>,
                 },
+                { key: "source", label: "Source", render: (a) => a.source === "camera" ? <Badge>camera verified</Badge> : (a.checkIn ? "Web" : "—") },
               ]}
               rows={resource.data}
             />

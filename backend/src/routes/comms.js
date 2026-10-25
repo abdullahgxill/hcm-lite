@@ -6,7 +6,7 @@ import { validate, isoDate } from "../validators/index.js";
 import { transaction } from "../config/db.js";
 import { audit } from "../services/audit.js";
 import { analytics } from "../services/analytics.js";
-import { runAI } from "../services/ai.js";
+import { runAI, toolNames } from "../services/ai.js";
 import { assert } from "../utils/errors.js";
 export const comms = Router();
 comms.get("/announcements", async (req, res) =>
@@ -81,6 +81,11 @@ const filters = z
     department: z.string().max(150).optional(),
   })
   .strict();
+comms.get("/ai/status", (req, res) => res.json({
+  configured: !!(process.env.AI_API_KEY && process.env.AI_MODEL),
+  liveReportsAvailable: true,
+  rateLimitPerHour: 20,
+}));
 comms.get("/dashboard", async (req, res) =>
   res.json(await analytics(req.user, filters.parse(req.query))),
 );
@@ -90,19 +95,21 @@ comms.post(
     z.object({
       message: z.string().trim().min(1).max(2000).optional(),
       filters: filters.optional(),
+      tool: z.enum(toolNames).optional(),
     }),
   ),
   async (req, res) => {
     assert(
-      ["chat", "summary", "smart-leave"].includes(req.params.kind),
+      ["chat", "summary", "smart-leave", "report"].includes(req.params.kind),
       404,
       "AI operation not found.",
     );
     assert(
-      req.params.kind === "summary" || req.body.message,
+      ["summary", "report"].includes(req.params.kind) || req.body.message,
       422,
       "Enter a message.",
     );
+    assert(req.params.kind !== "report" || req.body.tool, 422, "Choose a report.");
     res.json(await runAI(req.user, req.params.kind, req.body));
   },
 );

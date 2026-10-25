@@ -286,3 +286,23 @@ test('complete real forms: HR employee registration, Employee attendance/leave, 
   await settle(()=>document.body.textContent.toLowerCase().includes('finalize'),'Audit shows payroll finalization');
   if(root){await React.act(async()=>root.unmount());root=null;}
 },{timeout:45000});
+
+test('assistant verified reports use real records without a provider and preserve employee scope',async()=>{
+  await asRole(uiAdminToken,'/');
+  await settle(()=>hasButton('Ask assistant'),'Admin assistant entry');
+  await click('Ask assistant');
+  await settle(()=>document.body.textContent.includes('Hosted AI is not configured'),'Honest provider status');
+  await click('Team headcount');
+  await settle(()=>document.body.textContent.includes('Headcount: 2.'),'Verified headcount from the real database');
+  assert.match(document.body.textContent,/Verified database report — not AI-generated/);
+  const login=await server('post','/auth/login',null,{email:'ali.ui@ui.test',password:'EmployeePrivate789!'});
+  await asRole(login.token,'/');
+  await settle(()=>hasButton('Ask assistant'),'Employee assistant entry');
+  await click('Ask assistant');
+  await settle(()=>hasButton('My leave balance'),'Employee scoped report controls');
+  assert.equal(hasButton('Team headcount'),false);
+  assert.equal(hasButton('Payroll summary'),false);
+  await click('My leave balance');
+  await settle(()=>document.body.textContent.includes('casual: 8 of 10 days remaining'),'Approved leave balance in the assistant');
+  if(root){await React.act(async()=>root.unmount());root=null;}
+},{timeout:15000});

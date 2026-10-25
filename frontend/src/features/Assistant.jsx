@@ -2,12 +2,20 @@ import { useState } from "react";
 import { Sparkles, X, ArrowUp, ShieldCheck } from "lucide-react";
 import { api } from "../services/api";
 import { useAuth } from "../contexts/AuthContext";
+import { useResource } from "../hooks/useResource";
 import { Button, Notice, useAction } from "../components/ui";
 export default function Assistant({ onClose }) {
   const { user } = useAuth(),
     [input, setInput] = useState(""),
     [messages, setMessages] = useState([]),
     action = useAction();
+  const status = useResource("/ai/status");
+  async function report(tool, title) {
+    if (action.busy) return;
+    setMessages((m) => [...m, { role: "user", text: title }]);
+    const data = await action.run(async () => (await api.post("/ai/report", { tool })).data);
+    if (data) setMessages((m) => [...m, { role: "assistant", text: data.answer, label: data.label }]);
+  }
   async function send(text) {
     if (!text.trim() || action.busy) return;
     setInput("");
@@ -46,6 +54,15 @@ export default function Assistant({ onClose }) {
           </button>
         </header>
         <div className="chat-body">
+          <div className="assistant-availability" role="status">{status.loading ? "Checking AI configuration…" : status.error ? "Assistant configuration could not be checked. Try again when the service is available." : status.data?.configured ? "Hosted AI is configured. Responses use your authorized tools." : "Hosted AI is not configured. Verified reports below query your authorized database records without AI generation."}</div>
+          <details className="assistant-reports" open={!status.data?.configured}>
+            <summary>Open a verified report</summary>
+            <div className="chat-suggestions">{(user.role === "EMPLOYEE" ? [
+              ["get_my_leave_balance", "My leave balance"], ["get_attendance_summary", "My attendance summary"], ["get_payroll_summary", "My latest payslip"],
+            ] : [
+              ["get_headcount", "Team headcount"], ["get_attendance_summary", "Attendance summary"], ["get_late_comers", "Top late arrivals"], ["get_leave_summary", "Leave summary"], ["get_payroll_summary", "Payroll summary"], ["search_employees", "Employee directory"],
+            ]).map(([tool, title]) => <button key={tool} disabled={action.busy} onClick={() => report(tool, title)}>{title}</button>)}</div>
+          </details>
           {!messages.length && (
             <>
               <h3>A little clarity goes a long way.</h3>
@@ -97,6 +114,7 @@ export default function Assistant({ onClose }) {
             <input
               aria-label="Ask the assistant"
               placeholder="Ask a question…"
+              disabled={status.loading || !status.data?.configured}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               maxLength={2000}
@@ -104,7 +122,7 @@ export default function Assistant({ onClose }) {
             <Button
               aria-label="Send question"
               loading={action.busy}
-              disabled={!input.trim()}
+              disabled={!input.trim() || !status.data?.configured}
             >
               <ArrowUp size={18} />
             </Button>

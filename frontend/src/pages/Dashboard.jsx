@@ -1,4 +1,5 @@
 import { useState } from "react";
+import CameraAttendance from "../features/CameraAttendance";
 import { useOutletContext, Link } from "react-router-dom";
 import {
   Sparkles,
@@ -9,6 +10,7 @@ import {
   CalendarDays,
   Wallet,
   Activity,
+  Camera,
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -56,6 +58,7 @@ export default function Dashboard() {
     { openAI } = useOutletContext(),
     action = useAction(),
     [summary, setSummary] = useState("");
+  const [camera, setCamera] = useState(false);
   const data = resource.data;
   async function mark(kind) {
     const r = await action.run(
@@ -198,6 +201,7 @@ export default function Dashboard() {
         )}
       </div>
       <State resource={resource}>
+        {camera && <CameraAttendance kind={data?.todayAttendance?.checkIn ? "check-out" : "check-in"} onClose={() => setCamera(false)} onRecorded={() => { setCamera(false); resource.reload(); }} />}
         <ActionNotices action={action} />
         <section className="metric-grid">
           {metrics.map(([label, value, Icon, note]) => (
@@ -246,6 +250,7 @@ export default function Dashboard() {
                 {data?.todayAttendance ? "Check out" : "Check in"}
               </Button>
             </div>
+            <Button variant="secondary" disabled={!!data?.todayAttendance?.checkOut} onClick={() => setCamera(true)}><Camera size={17} />Camera {data?.todayAttendance?.checkIn ? "check out" : "check in"}</Button>
           </Panel>
         )}
         <div className="dashboard-grid">

@@ -1,0 +1,27 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> hcm-lite@1.0.0 test:ui
+> node --test frontend/src/tests/*.test.mjs
+
+WebSocket server error: Port 24678 is already in use
+✔ camera UI starts with permissions untouched and blocks recording until face and GPS are ready (495.882285ms)
+✔ device diagnostic never submits attendance and closes camera resources on unmount (19.654337ms)
+✔ camera permission denial and inaccurate GPS explain recovery without saving (22.237528ms)
+✔ a camera permission request resolving after unmount is stopped instead of leaking (10.213215ms)
+8:47:53 PM [vite] (client) Re-optimizing dependencies because vite config has changed
+✔ typing in a dialog keeps focus, input identity and cursor across parent updates (436.882951ms)
+✔ Escape invokes the latest close callback; Tab stays inside the modal (8.598173ms)
+✔ a wrong current password shows an error without logging out the valid session (2.926979ms)
+✔ password visibility and credential copying preserve the exact secret (12.385597ms)
+8:47:54 PM [vite] (client) Re-optimizing dependencies because vite config has changed
+✔ real forms: Admin creates HR, copies credentials, resets HR, fresh session logs in and changes password (4240.085011ms)
+✔ complete real forms: HR employee registration, Employee attendance/leave, HR approval/draft, Admin lock and Employee PDF (3489.216879ms)
+✔ assistant verified reports use real records without a provider and preserve employee scope (462.843523ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9474.270874

@@ -86,8 +86,8 @@ export const settingsSchema = z
     graceMinutes: z.coerce.number().int().min(0).max(120),
     halfDayHours: z.coerce.number().min(1).max(12),
     weekends: z.array(z.number().int().min(0).max(6)).max(6),
-    latitude: z.coerce.number().min(-90).max(90).optional(),
-    longitude: z.coerce.number().min(-180).max(180).optional(),
+    latitude: z.coerce.number().min(-90).max(90).nullable().optional(),
+    longitude: z.coerce.number().min(-180).max(180).nullable().optional(),
     radius: z.coerce.number().min(1).max(10000),
     departments: z.array(text).max(100),
     designations: z.array(text).max(100),
@@ -106,6 +106,7 @@ export const settingsSchema = z
   .refine((v) => v.officeEnd > v.officeStart, {
     message: "Office end must be after office start (same-day shifts)",
   })
+  .refine((v) => (v.latitude == null) === (v.longitude == null), { message: "Provide both office latitude and longitude, or leave both empty." })
   .refine(
     (v) =>
       new Set(v.leaveTypes.map((t) => t.name)).size === v.leaveTypes.length &&

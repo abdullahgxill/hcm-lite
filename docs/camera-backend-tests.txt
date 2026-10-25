@@ -1,0 +1,42 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> hcm-lite@1.0.0 test
+> npm test -w backend
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> hcm-backend@1.0.0 test
+> node --test --test-concurrency=1 src/tests/*.test.js
+
+✔ Haversine geofence covers centre, radius boundary, outside and longitude wrap (516.911724ms)
+✔ camera rules reject absent/multiple faces, inaccurate/stale/future GPS and outside radius (4.317704ms)
+✔ camera API requires login and rejects bad captures before any record is saved (115.778366ms)
+✔ camera check-in/out stores results only, duplicate is 409 and employee scope is retained (76.353412ms)
+✔ verified reports work without an AI key, log tools, match dashboard and reject scope escalation (98.065032ms)
+✔ working days exclude weekends and public holidays (1.887593ms)
+✔ 09:15 is on time, 09:16 is late; exactly five hours is not half day (13.043218ms)
+✔ illustrative tax slabs and boundaries (0.324238ms)
+✔ payroll exact gross, paid leave, unpaid, absence, half days and rounding (0.808418ms)
+✔ joiners and leavers prorate only eligible working days (0.413563ms)
+✔ AI tool authorization follows roles (0.129675ms)
+✔ date ranges cannot expand into an unbounded query (0.307413ms)
+✔ fresh install, authentication, roles and employee creation (3948.801888ms)
+✔ attendance server stamp, duplicate 409, checkout and role guards (98.055431ms)
+✔ leave overlap, quotas, comments, cancellation and decision notification (187.038436ms)
+✔ concurrent approvals cannot overspend the same annual quota (148.137336ms)
+✔ CSV validation is side-effect free and commit creates only validated rows (297.598978ms)
+✔ dashboard and AI use identical live metrics and employee scope (39.322392ms)
+✔ correction request approval and immutable audit API (56.579897ms)
+✔ payroll draft, review revision, finalization lock, payslip PDF and data scope (157.364373ms)
+✔ announcements, notification ownership, login reset and deactivation (1006.188827ms)
+✔ AI unavailable fallback, tool calling, smart-leave retry and logs (42.781119ms)
+✔ AI hourly rate limit persists across instances and logout revokes token (15.648242ms)
+✔ HR chosen temporary passwords, email normalization, repeated resets and scope (1880.450359ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11036.2784

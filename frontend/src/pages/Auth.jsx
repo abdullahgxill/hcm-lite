@@ -154,6 +154,7 @@ export function AuthPage() {
             </form>
             <p className="auth-footnote">
               HCM Lite · Access is managed by your company administrator.
+              <br /><Link to="/device-check">Check camera & location</Link>
             </p>
           </div>
         </State>

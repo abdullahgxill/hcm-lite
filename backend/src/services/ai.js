@@ -166,6 +166,12 @@ export async function runAI(user, kind, input) {
       429,
       "You have reached 20 AI requests this hour. Please try again next hour.",
     );
+    if (kind === "report") {
+      const result = await executeTool(user, input.tool, input.filters || {});
+      used.push(input.tool);
+      outcome = "success";
+      return { label: "Verified database report — not AI-generated", answer: formatReport(input.tool, result), data: result };
+    }
     if (
       kind === "chat" &&
       user.role === "EMPLOYEE" &&
@@ -342,4 +348,16 @@ export async function runAI(user, kind, input) {
       durationMs: Date.now() - started,
     });
   }
+}
+
+function formatReport(tool, data) {
+  const money = (n) => `PKR ${(Number(n || 0) / 100).toLocaleString("en-PK", { maximumFractionDigits: 2 })}`;
+  if (tool === "get_headcount") return `Headcount: ${data.headcount}.\n${data.departmentBreakdown.map((d) => `${d.department}: ${d.headcount}`).join("\n")}`;
+  if (tool === "get_my_leave_balance") return data.map((b) => `${b.type}: ${b.remaining === null ? "unlimited" : `${b.remaining} of ${b.quota} days remaining`}`).join("\n");
+  if (tool === "get_attendance_summary") return `Present today: ${data.presentToday}. Late today: ${data.lateToday}.\nAttendance rate in the selected period: ${Number(data.attendanceRate || 0).toFixed(1)}%.\nAbsenteeism: ${Number(data.absenteeism || 0).toFixed(1)}%.`;
+  if (tool === "get_late_comers") return data.topLate.length ? data.topLate.map((d) => `${d.name}: ${d.count ?? d.lateCount ?? 0} late arrivals`).join("\n") : "No late arrivals were recorded in this period.";
+  if (tool === "get_leave_summary") return `On leave today: ${data.onLeaveToday}.\n${data.requests.length ? data.requests.map((l) => `${l.name}: ${l.type}, ${l.start} to ${l.end} (${l.days.length} working days in the selected period)`).join("\n") : "No approved leave requests match this period."}`;
+  if (tool === "search_employees") return data.length ? data.map((e) => `${e.name} (${e.code}) — ${e.department}, ${e.designation}`).join("\n") : "No employees match your access and filters.";
+  if ("lastPayslip" in data) return data.lastPayslip ? `Your latest finalized payslip:\n${JSON.stringify(data.lastPayslip, (key, value) => key.endsWith("Cents") ? money(value) : value, 2)}` : "You do not have a finalized payslip yet.";
+  return `Finalized payroll gross: ${money(data.grossCents)}.\nFinalized payroll net: ${money(data.netCents)}.\nAverage contractual gross salary: ${money(data.averageGrossCents)}.`;
 }

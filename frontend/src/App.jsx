@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import AppLayout from "./layouts/AppLayout";
 import { AuthPage, PasswordPage } from "./pages/Auth";
@@ -9,6 +9,7 @@ import Attendance from "./pages/Attendance";
 import Leave from "./pages/Leave";
 import Payroll from "./pages/Payroll";
 import Settings from "./pages/Settings";
+import DeviceCheck from "./pages/DeviceCheck";
 import {
   Announcements,
   Notifications,
@@ -21,6 +22,8 @@ function Guard({ roles, children }) {
 }
 export default function App() {
   const { user, loading } = useAuth();
+  const location = useLocation();
+  if (location.pathname === "/device-check") return <DeviceCheck />;
   if (loading)
     return <div className="state full-state">Opening your workspace…</div>;
   if (!user) return <AuthPage />;

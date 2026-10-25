@@ -167,9 +167,10 @@ test("fresh install, authentication, roles and employee creation", async () => {
 });
 test("attendance server stamp, duplicate 409, checkout and role guards", async () => {
   ok(await api("post", "/attendance/check-in", admin), 403);
+  ok(await api("post", "/attendance/check-in", emp, { checkIn: "2020-01-01" }), 422);
   const before = Date.now(),
     a = ok(
-      await api("post", "/attendance/check-in", emp, { checkIn: "2020-01-01" }),
+      await api("post", "/attendance/check-in", emp),
       201,
     );
   assert.ok(new Date(a.checkIn).getTime() >= before);
